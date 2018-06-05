@@ -1,9 +1,9 @@
 import sys
 import json
+from pprint import pprint
 
 import requests
-
-from pprint import pprint
+from sqlitedict import SqliteDict
 
 
 class SkyMesh:
@@ -62,13 +62,17 @@ class SkyMesh:
 
 if __name__ == '__main__':
     if len(sys.argv) <= 2:
-        print 'USAGE: %s username password' % (sys.argv[0])
+        print 'USAGE: %s username password [db_file]' % (sys.argv[0])
         print '  or'
         print 'USAGE: %s `cat credentials.txt`' % (sys.argv[0])
         sys.exit(1)
 
     username = sys.argv[1]
     password = sys.argv[2]
+    if len(sys.argv) > 3:
+        db_file = sys.argv[3]
+    else:
+        db_file = './usage.db'
 
     sm = SkyMesh()
     if sm.site_down():
@@ -78,8 +82,24 @@ if __name__ == '__main__':
     if not sm.login(username, password):
         print "LOGIN FAILED!"
         sys.exit()
+        
+    methods = ['usage_table_daily2',
+               'usage_this_month',
+               'usage_buckets',
+               'usage_last24hours']
+    res = {}
+    for method in methods:
+        res[method] = sm.rpc(tinaurl,method,{})
+    pprint(res)
+    # for now just store everything to sqlite database for later eval
+    with SqliteDict(db_file) as db:
+        db[datetime.now()] = res
+        db.commit()
 
-    pprint(sm.get_usage())
+#    with SqliteDict('./usage.db') as db:
+#        for k,v in db.items():
+#            print k, v
+
 
 #TINA STUFF OF INTEREST:
 #  usage_this_month
