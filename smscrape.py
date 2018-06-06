@@ -1,5 +1,6 @@
 import sys
 import json
+from datetime import datetime
 from pprint import pprint
 
 import requests
@@ -87,6 +88,7 @@ if __name__ == '__main__':
                'usage_this_month',
                'usage_buckets',
                'usage_last24hours']
+    tinaurl = sm.baseurl + '/services/tina-myskymesh.jsonrpc'
     res = {}
     for method in methods:
         res[method] = sm.rpc(tinaurl,method,{})
