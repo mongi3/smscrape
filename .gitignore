@@ -1,0 +1,8 @@
+*~
+# virtual env stuff
+include/
+lib/
+local/
+bin
+credentials.txt
+notes.txt
