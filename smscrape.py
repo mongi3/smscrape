@@ -4,12 +4,18 @@ from datetime import datetime
 from pprint import pprint
 
 import requests
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 from sqlitedict import SqliteDict
 
 
 class SkyMesh:
     def __init__(self, baseurl='https://my.skymesh.net.au'):
         self._session = requests.Session()
+        retry = Retry(connect=3, backoff_factor=0.5)
+        adapter = HTTPAdapter(max_retries=retry)
+        session.mount('http://', adapter)
+        session.mount('https://', adapter)
         self._credentials_dict = {}
         self.baseurl = baseurl
 
