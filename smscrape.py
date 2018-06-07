@@ -12,7 +12,7 @@ from sqlitedict import SqliteDict
 class SkyMesh:
     def __init__(self, baseurl='https://my.skymesh.net.au'):
         self._session = requests.Session()
-        retry = Retry(connect=3, backoff_factor=0.5)
+        retry = Retry(connect=5, backoff_factor=0.5)
         adapter = HTTPAdapter(max_retries=retry)
         session.mount('http://', adapter)
         session.mount('https://', adapter)
