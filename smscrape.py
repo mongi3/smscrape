@@ -14,8 +14,8 @@ class SkyMesh:
         self._session = requests.Session()
         retry = Retry(connect=5, backoff_factor=0.5)
         adapter = HTTPAdapter(max_retries=retry)
-        session.mount('http://', adapter)
-        session.mount('https://', adapter)
+        self._session.mount('http://', adapter)
+        self._session.mount('https://', adapter)
         self._credentials_dict = {}
         self.baseurl = baseurl
 
